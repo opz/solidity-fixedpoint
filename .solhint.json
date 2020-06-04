@@ -1,0 +1,9 @@
+{
+  "extends": "solhint:recommended",
+  "rules": {
+    "max-line-length": ["error", 99],
+    "reason-string": ["warn", { "max-length": 32 }],
+    "private-vars-leading-underscore": "warn",
+    "compiler-version": ["error", ">=0.4.0"]
+  }
+}

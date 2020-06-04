@@ -1,0 +1,33 @@
+{
+  "name": "solidity-fixedpoint",
+  "version": "1.0.0",
+  "description": "Implements fixed point numbers in Solidity using the Q number format",
+  "files": [
+    "contracts"
+  ],
+  "homepage": "https://github.com/opz/solidity-fixedpoint",
+  "repository": {
+    "url": "https://github.com/opz/solidity-fixedpoint",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/Uniswap/uniswap-lib/issues"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "devDependencies": {
+    "@nomiclabs/buidler": "^1.3.5",
+    "@nomiclabs/buidler-ethers": "^1.3.3",
+    "@nomiclabs/buidler-waffle": "^1.3.4",
+    "chai": "^4.2.0",
+    "ethereum-waffle": "^2.5.1",
+    "ethers": "^4.0.47",
+    "solhint": "^3.0.0"
+  },
+  "scripts": {
+    "lint": "solhint -w 0 \"contracts/**/*.sol\""
+  },
+  "author": "Will Shahda",
+  "license": "GPL-3.0-or-later"
+}
