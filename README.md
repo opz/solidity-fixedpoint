@@ -7,7 +7,9 @@ Implements fixed point numbers in Solidity using the [Q number format](https://e
 
 Built off the Uniswap [FixedPoint](https://github.com/Uniswap/uniswap-lib/blob/master/contracts/libraries/FixedPoint.sol) and [Babylonian](https://github.com/Uniswap/uniswap-lib/blob/master/contracts/libraries/Babylonian.sol) libraries developed by [moodysalem](https://github.com/moodysalem).
 
-This library maximizes both range and resolution of fixed point numbers by increasing the size of the Q format from UQ112x112 to UQ128x128. Uniswap originally used UQ112x112 to optimize the variable packing in their contracts.
+This library uses the UQ192x64 format to maximize the range of fixed point numbers while keeping the resolution close to the 18 decimal places that is standard for most Solidity contracts.
+
+Uniswap originally used the UQ112x112 format to optimize the variable packing in their contracts.
 
 ## Install Dependencies
 

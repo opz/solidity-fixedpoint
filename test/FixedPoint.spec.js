@@ -23,7 +23,7 @@ const { bigNumberify } = require("ethers/utils");
 
 const FixedPoint = require("../artifacts/FixedPointTest.json");
 
-const Q128 = bigNumberify(2).pow(128);
+const Q64 = bigNumberify(2).pow(64);
 
 describe("FixedPoint", () => {
   const provider = waffle.provider;
@@ -36,18 +36,18 @@ describe("FixedPoint", () => {
   });
 
   describe("encode", () => {
-    it("shifts left by 128", async () => {
-      expect((await fixedPoint.encode("0x01"))[0]).to.eq(Q128.toHexString())
+    it("shifts left by 192", async () => {
+      expect((await fixedPoint.encode("0x01"))[0]).to.eq(Q64.toHexString())
     });
 
-    it("will not take >uint128(-1)", async () => {
+    it("will not take >uint192(-1)", async () => {
       expect(() => fixedPoint.encode(bigNumberify(2).pow(129).sub(1))).to.throw
     });
   });
 
   describe("decode", () => {
-    it("shifts right by 128", async () => {
-      expect(await fixedPoint.decode([bigNumberify(3).mul(Q128)])).to.eq(bigNumberify(3))
+    it("shifts right by 192", async () => {
+      expect(await fixedPoint.decode([bigNumberify(3).mul(Q64)])).to.eq(bigNumberify(3))
     });
 
     it("will not take >uint256(-1)", async () => {
@@ -57,25 +57,25 @@ describe("FixedPoint", () => {
 
   describe("div", () => {
     it("correct division", async () => {
-      expect((await fixedPoint.div([bigNumberify(3).mul(Q128)], bigNumberify(2)))[0]).to.eq(
-        bigNumberify(3).mul(Q128).div(2)
+      expect((await fixedPoint.div([bigNumberify(3).mul(Q64)], bigNumberify(2)))[0]).to.eq(
+        bigNumberify(3).mul(Q64).div(2)
       );
     });
 
     it("throws for div by zero", async () => {
-      await expect(fixedPoint.div([bigNumberify(3).mul(Q128)], 0)).to.be.revertedWith("FixedPoint: DIV_BY_ZERO");
+      await expect(fixedPoint.div([bigNumberify(3).mul(Q64)], 0)).to.be.revertedWith("FixedPoint: DIV_BY_ZERO");
     });
   });
 
   describe("mul", () => {
     it("correct multiplication", async () => {
-      expect((await fixedPoint.mul([bigNumberify(3).mul(Q128)], bigNumberify(2)))[0]).to.eq(
-        bigNumberify(3).mul(2).mul(Q128)
+      expect((await fixedPoint.mul([bigNumberify(3).mul(Q64)], bigNumberify(2)))[0]).to.eq(
+        bigNumberify(3).mul(2).mul(Q64)
       );
     });
 
     it("overflow", async () => {
-      await expect(fixedPoint.mul([bigNumberify(1).mul(Q128)], bigNumberify(2).pow(128))).to.be.revertedWith(
+      await expect(fixedPoint.mul([bigNumberify(1).mul(Q64)], bigNumberify(2).pow(192))).to.be.revertedWith(
         "FixedPoint: MUL_OVERFLOW"
       );
     });
@@ -83,11 +83,11 @@ describe("FixedPoint", () => {
 
   describe("fraction", () => {
     it("correct computation less than 1", async () => {
-      expect((await fixedPoint.fraction(4, 100))[0]).to.eq(bigNumberify(4).mul(Q128).div(100));
+      expect((await fixedPoint.fraction(4, 100))[0]).to.eq(bigNumberify(4).mul(Q64).div(100));
     });
 
     it("correct computation greater than 1", async () => {
-      expect((await fixedPoint.fraction(100, 4))[0]).to.eq(bigNumberify(100).mul(Q128).div(4));
+      expect((await fixedPoint.fraction(100, 4))[0]).to.eq(bigNumberify(100).mul(Q64).div(4));
     });
 
     it("fails with 0 denominator", async () => {
@@ -97,7 +97,7 @@ describe("FixedPoint", () => {
 
   describe("reciprocal", () => {
     it("works for 0.25", async () => {
-      expect((await fixedPoint.reciprocal([Q128.mul(bigNumberify(25)).div(100)]))[0]).to.eq(Q128.mul(4));
+      expect((await fixedPoint.reciprocal([Q64.mul(bigNumberify(25)).div(100)]))[0]).to.eq(Q64.mul(4));
     });
 
     it("fails for 0", async () => {
@@ -107,12 +107,12 @@ describe("FixedPoint", () => {
 
   describe("sqrt", () => {
     it("works for 25", async () => {
-      expect((await fixedPoint.sqrt([bigNumberify(25).mul(Q128)]))[0]).to.eq(bigNumberify(5).mul(Q128));
+      expect((await fixedPoint.sqrt([bigNumberify(25).mul(Q64)]))[0]).to.eq(bigNumberify(5).mul(Q64));
     });
 
     it("works with numbers less than 1", async () => {
-      expect((await fixedPoint.sqrt([bigNumberify(1225).mul(Q128).div(100)]))[0]).to.eq(
-        bigNumberify(35).mul(Q128).div(10)
+      expect((await fixedPoint.sqrt([bigNumberify(1225).mul(Q64).div(100)]))[0]).to.eq(
+        bigNumberify(35).mul(Q64).div(10)
       );
     });
   });

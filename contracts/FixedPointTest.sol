@@ -25,53 +25,53 @@ pragma experimental ABIEncoderV2;
 import {FixedPoint} from "./FixedPoint.sol";
 
 contract FixedPointTest {
-    function encode(uint128 x) external pure returns (FixedPoint.uq128x128 memory) {
+    function encode(uint192 x) external pure returns (FixedPoint.uq192x64 memory) {
         return FixedPoint.encode(x);
     }
 
-    // divide a UQ128x128 by a uint128, returning a UQ128x128
-    function div(FixedPoint.uq128x128 calldata self, uint128 y)
+    // divide a UQ128x128 by a uint192, returning a UQ128x128
+    function div(FixedPoint.uq192x64 calldata self, uint192 y)
         external
         pure
-        returns (FixedPoint.uq128x128 memory)
+        returns (FixedPoint.uq192x64 memory)
     {
         return FixedPoint.div(self, y);
     }
 
-    function fraction(uint128 numerator, uint128 denominator)
+    function fraction(uint192 numerator, uint192 denominator)
         external
         pure
-        returns (FixedPoint.uq128x128 memory)
+        returns (FixedPoint.uq192x64 memory)
     {
         return FixedPoint.fraction(numerator, denominator);
     }
 
     // multiply a UQ128x128 by a uint, returning a UQ128x128
-    function mul(FixedPoint.uq128x128 calldata self, uint y)
+    function mul(FixedPoint.uq192x64 calldata self, uint y)
         external
         pure
-        returns (FixedPoint.uq128x128 memory)
+        returns (FixedPoint.uq192x64 memory)
     {
         return FixedPoint.mul(self, y);
     }
 
     // decode a UQ128x128 in a uint container into a uint by truncating after the radix point
-    function decode(FixedPoint.uq128x128 calldata self) external pure returns (uint128) {
+    function decode(FixedPoint.uq192x64 calldata self) external pure returns (uint192) {
         return FixedPoint.decode(self);
     }
 
-    function reciprocal(FixedPoint.uq128x128 calldata self)
+    function reciprocal(FixedPoint.uq192x64 calldata self)
         external
         pure
-        returns (FixedPoint.uq128x128 memory)
+        returns (FixedPoint.uq192x64 memory)
     {
         return FixedPoint.reciprocal(self);
     }
 
-    function sqrt(FixedPoint.uq128x128 calldata self)
+    function sqrt(FixedPoint.uq192x64 calldata self)
         external
         pure
-        returns (FixedPoint.uq128x128 memory)
+        returns (FixedPoint.uq192x64 memory)
     {
         return FixedPoint.sqrt(self);
     }

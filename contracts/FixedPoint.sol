@@ -24,62 +24,63 @@ pragma solidity >=0.4.0;
 import {Babylonian} from "./Babylonian.sol";
 
 library FixedPoint {
-    // range: [0, 2**128 - 1]
-    // resolution: 1 / 2**128
-    struct uq128x128 { // solhint-disable-line contract-name-camelcase
+    // range: [0, 2**192 - 1]
+    // resolution: 1 / 2**64
+    struct uq192x64 { // solhint-disable-line contract-name-camelcase
         uint _x;
     }
 
-    uint8 private constant _RESOLUTION = 128;
-    uint private constant _Q128 = uint(1) << _RESOLUTION;
-    uint private constant _Q256 = _Q128 << _RESOLUTION;
+    uint8 private constant _M = 192;
+    uint8 private constant _N = 64;
+    uint private constant _Q192 = uint(1) << _M;
+    uint private constant _Q64 = uint(1) << _N;
 
-    // encode a uint128 as a UQ128x128
-    function encode(uint128 x) internal pure returns (uq128x128 memory) {
-        return uq128x128(uint(x) << _RESOLUTION);
+    // encode a uint192 as a UQ192x64
+    function encode(uint192 x) internal pure returns (uq192x64 memory) {
+        return uq192x64(uint(x) << _N);
     }
 
-    // divide a UQ128x128 by a uint128, returning a UQ128x128
-    function div(uq128x128 memory self, uint128 x) internal pure returns (uq128x128 memory) {
+    // divide a UQ192x64 by a uint192, returning a UQ192x64
+    function div(uq192x64 memory self, uint192 x) internal pure returns (uq192x64 memory) {
         require(x != 0, "FixedPoint: DIV_BY_ZERO");
-        return uq128x128(self._x / uint(x));
+        return uq192x64(self._x / uint(x));
     }
 
-    // multiply a UQ128x128 by a uint, returning a UQ128x128
+    // multiply a UQ192x64 by a uint, returning a UQ192x64
     // reverts on overflow
-    function mul(uq128x128 memory self, uint y) internal pure returns (uq128x128 memory) {
+    function mul(uq192x64 memory self, uint y) internal pure returns (uq192x64 memory) {
         uint z;
         require(
             y == 0 || (z = self._x * y) / y == self._x,
             "FixedPoint: MUL_OVERFLOW"
         );
-        return uq128x128(z);
+        return uq192x64(z);
     }
 
-    // returns a UQ128x128 which represents the ratio of the numerator to the denominator
+    // returns a UQ192x64 which represents the ratio of the numerator to the denominator
     // equivalent to encode(numerator).div(denominator)
-    function fraction(uint128 numerator, uint128 denominator)
+    function fraction(uint192 numerator, uint192 denominator)
         internal
         pure
-        returns (uq128x128 memory)
+        returns (uq192x64 memory)
     {
         require(denominator > 0, "FixedPoint: DIV_BY_ZERO");
-        return uq128x128((uint(numerator) << _RESOLUTION) / denominator);
+        return uq192x64((uint(numerator) << _N) / denominator);
     }
 
-    // decode a UQ128x128 into a uint128 by truncating after the radix point
-    function decode(uq128x128 memory self) internal pure returns (uint128) {
-        return uint128(self._x >> _RESOLUTION);
+    // decode a UQ192x64 into a uint192 by truncating after the radix point
+    function decode(uq192x64 memory self) internal pure returns (uint192) {
+        return uint192(self._x >> _N);
     }
 
-    // take the reciprocal of a UQ128x128
-    function reciprocal(uq128x128 memory self) internal pure returns (uq128x128 memory) {
+    // take the reciprocal of a UQ192x64
+    function reciprocal(uq192x64 memory self) internal pure returns (uq192x64 memory) {
         require(self._x != 0, "FixedPoint: ZERO_RECIPROCAL");
-        return uq128x128(_Q128 / self._x * _Q128);
+        return uq192x64(_Q64 / self._x * _Q64);
     }
 
-    // square root of a UQ128x128
-    function sqrt(uq128x128 memory self) internal pure returns (uq128x128 memory) {
-        return uq128x128(Babylonian.sqrt(self._x) << 64);
+    // square root of a UQ192x64
+    function sqrt(uq192x64 memory self) internal pure returns (uq192x64 memory) {
+        return uq192x64(Babylonian.sqrt(self._x) << 32);
     }
 }
