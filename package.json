@@ -1,6 +1,6 @@
 {
   "name": "solidity-fixedpoint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Implements fixed point numbers in Solidity using the Q number format",
   "keywords": [
     "ethereum",
