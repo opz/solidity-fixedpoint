@@ -29,7 +29,7 @@ contract FixedPointTest {
         return FixedPoint.encode(x);
     }
 
-    // divide a UQ128x128 by a uint192, returning a UQ128x128
+    // divide a UQ192x64 by a uint192, returning a UQ192x64
     function div(FixedPoint.uq192x64 calldata self, uint192 y)
         external
         pure
@@ -46,7 +46,7 @@ contract FixedPointTest {
         return FixedPoint.fraction(numerator, denominator);
     }
 
-    // multiply a UQ128x128 by a uint, returning a UQ128x128
+    // multiply a UQ192x64 by a uint, returning a UQ192x64
     function mul(FixedPoint.uq192x64 calldata self, uint y)
         external
         pure
@@ -55,7 +55,7 @@ contract FixedPointTest {
         return FixedPoint.mul(self, y);
     }
 
-    // decode a UQ128x128 in a uint container into a uint by truncating after the radix point
+    // decode a UQ192x64 in a uint container into a uint by truncating after the radix point
     function decode(FixedPoint.uq192x64 calldata self) external pure returns (uint192) {
         return FixedPoint.decode(self);
     }
